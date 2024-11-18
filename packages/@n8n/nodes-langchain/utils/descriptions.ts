@@ -1,7 +1,72 @@
 import type { INodeProperties } from 'n8n-workflow';
 
+export const schemaTypeField: INodeProperties = {
+	displayName: 'Schema Type',
+	name: 'schemaType',
+	type: 'options',
+	noDataExpression: true,
+	options: [
+		{
+			name: 'Generate From JSON Example',
+			value: 'fromJson',
+			description: 'Generate a schema from an example JSON object',
+		},
+		{
+			name: 'Define Below',
+			value: 'manual',
+			description: 'Define the JSON schema manually',
+		},
+	],
+	default: 'fromJson',
+	description: 'How to specify the schema for the function',
+};
+
+export const jsonSchemaExampleField: INodeProperties = {
+	displayName: 'JSON Example',
+	name: 'jsonSchemaExample',
+	type: 'json',
+	default: `{
+	"some_input": "some_value"
+}`,
+	noDataExpression: true,
+	typeOptions: {
+		rows: 10,
+	},
+	displayOptions: {
+		show: {
+			schemaType: ['fromJson'],
+		},
+	},
+	description: 'Example JSON object to use to generate the schema',
+};
+
+export const inputSchemaField: INodeProperties = {
+	displayName: 'Input Schema',
+	name: 'inputSchema',
+	type: 'json',
+	default: `{
+"type": "object",
+"properties": {
+	"some_input": {
+		"type": "string",
+		"description": "Some input to the function"
+		}
+	}
+}`,
+	noDataExpression: true,
+	typeOptions: {
+		rows: 10,
+	},
+	displayOptions: {
+		show: {
+			schemaType: ['manual'],
+		},
+	},
+	description: 'Schema to use for the function',
+};
+
 export const promptTypeOptions: INodeProperties = {
-	displayName: 'Prompt',
+	displayName: 'Prompt Source',
 	name: 'promptType',
 	type: 'options',
 	options: [
@@ -31,4 +96,16 @@ export const textInput: INodeProperties = {
 	typeOptions: {
 		rows: 2,
 	},
+};
+
+export const textFromPreviousNode: INodeProperties = {
+	displayName: 'Text From Previous Node',
+	name: 'text',
+	type: 'string',
+	required: true,
+	default: '={{ $json.chatInput }}',
+	typeOptions: {
+		rows: 2,
+	},
+	disabledOptions: { show: { promptType: ['auto'] } },
 };

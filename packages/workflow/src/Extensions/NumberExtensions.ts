@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 import { DateTime } from 'luxon';
-import { ExpressionExtensionError } from '../errors/expression-extension.error';
+
 import type { ExtensionMap } from './Extensions';
+import { ExpressionExtensionError } from '../errors/expression-extension.error';
 
 function format(value: number, extraArgs: unknown[]): string {
 	const [locales = 'en-US', config = {}] = extraArgs as [
@@ -62,7 +63,7 @@ function toFloat(value: number) {
 }
 
 type DateTimeFormat = 'ms' | 's' | 'us' | 'excel';
-function toDateTime(value: number, extraArgs: [DateTimeFormat]) {
+export function toDateTime(value: number, extraArgs: [DateTimeFormat]) {
 	const [valueFormat = 'ms'] = extraArgs;
 
 	if (!['ms', 's', 'us', 'excel'].includes(valueFormat)) {
